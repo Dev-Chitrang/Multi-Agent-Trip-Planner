@@ -79,7 +79,7 @@ Built with **CrewAI**, **Gemini LLM**, and **SerpAPI**, and deployed as a beauti
 ### 1️⃣ Clone the Repository
 ```bash
 git clone https://github.com/Dev-Chitrang/AICTE-AI-CLOUD.git
-cd ai-trip-planner
+cd AICTE-AI-CLOUD
 
 ### 2️⃣ Create a Virtual Environment
 python -m venv venv
