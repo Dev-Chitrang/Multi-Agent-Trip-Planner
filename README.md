@@ -53,6 +53,7 @@ Built with **CrewAI**, **Gemini LLM**, and **SerpAPI**, and deployed as a beauti
 ---
 
 ## 🧠 Project Architecture
+
 📦 ai-trip-planner
 ├── app.py # Streamlit UI
 ├── agents.py # Agent definitions (Flight, Hotel, Itinerary)
@@ -61,6 +62,7 @@ Built with **CrewAI**, **Gemini LLM**, and **SerpAPI**, and deployed as a beauti
 ├── crew.py # Crew definition and kickoff logic
 ├── .env # API keys
 └── requirements.txt # Dependencies
+
 
 
 ### 🔹 Agent Overview
@@ -76,7 +78,7 @@ Built with **CrewAI**, **Gemini LLM**, and **SerpAPI**, and deployed as a beauti
 
 ### 1️⃣ Clone the Repository
 ```bash
-git clone https://github.com/<your-username>/ai-trip-planner.git
+git clone https://github.com/Dev-Chitrang/ai-trip-planner.git
 cd ai-trip-planner
 
 ### 2️⃣ Create a Virtual Environment
