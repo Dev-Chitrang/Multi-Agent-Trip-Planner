@@ -54,14 +54,14 @@ Built with **CrewAI**, **Gemini LLM**, and **SerpAPI**, and deployed as a beauti
 
 ## 🧠 Project Architecture
 
-📦 ai-trip-planner
-├── app.py # Streamlit UI
-├── agents.py # Agent definitions (Flight, Hotel, Itinerary)
-├── tasks.py # CrewAI tasks for each agent
-├── tools.py # SerpAPI integration tools
-├── crew.py # Crew definition and kickoff logic
-├── .env # API keys
-└── requirements.txt # Dependencies
+📦 AICTE-AI-CLOUD
+|-- app.py # Streamlit UI App
+|-- agents.py # Agents defininations (flight, hotel and itinerary)
+|-- tasks.py # CrewAI tasks for each agent
+|-- tools.py # SerpAPI integration tools
+|-- crew.py # Crew definiation and kickoff logic
+|-- requirements.py # Dependencies
+|-- Images # Output Images
 
 
 
