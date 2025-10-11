@@ -41,14 +41,14 @@ Built with **CrewAI**, **Gemini LLM**, and **SerpAPI**, and deployed as a beauti
 
 ## 🧩 Tech Stack
 
-| Component | Technology                                                                |
-|------------|--------------------------------------------------------------------------|
-| **Frontend** | [Streamlit](https://streamlit.io/)                                     |
-| **AI Engine** | [CrewAI](https://github.com/joaomdmoura/crewai)                       |
-| **Language Model** | [Gemini 2.0 Flash](https://ai.google.dev/gemini-api/docs/models) |
-| **Data Sources** | [SerpAPI](https://serpapi.com/) (Google Flights + Hotels)          |
-| **Environment Management** | `dotenv`                                                 |
-| **Language** | Python 3.10+                                                           |
+| Component                  | Technology                                                       |
+|----------------------------|------------------------------------------------------------------|
+| **Frontend**               | [Streamlit](https://streamlit.io/)                               |
+| **AI Engine**              | [CrewAI](https://github.com/joaomdmoura/crewai)                  |
+| **Language Model**         | [Gemini 2.0 Flash](https://ai.google.dev/gemini-api/docs/models) |
+| **Data Sources**           | [SerpAPI](https://serpapi.com/) (Google Flights + Hotels)        |
+| **Environment Management** | `dotenv`                                                         |
+| **Language**               | Python 3.10+                                                     |
 
 ---
 
@@ -66,11 +66,11 @@ Built with **CrewAI**, **Gemini LLM**, and **SerpAPI**, and deployed as a beauti
 
 
 ### 🔹 Agent Overview
-| Agent | Goal | Tool Used |
-|--------|------|-----------|
-| `Flight Specialist` | Find best flights within budget | FlightSearchTool |
-| `Hotel Specialist` | Recommend best hotels within budget | HotelSearchTool |
-| `Travel Planner` | Build detailed day-by-day itinerary | AttractionSearchTool |
+| Agent               | Goal                                | Tool Used            |
+|---------------------|-------------------------------------|----------------------|
+| `Flight Specialist` | Find best flights within budget     | FlightSearchTool     |
+| `Hotel Specialist`  | Recommend best hotels within budget | HotelSearchTool      |
+| `Travel Planner`    | Build detailed day-by-day itinerary | AttractionSearchTool |
 
 ---
 
@@ -78,7 +78,7 @@ Built with **CrewAI**, **Gemini LLM**, and **SerpAPI**, and deployed as a beauti
 
 ### 1️⃣ Clone the Repository
 ```bash
-git clone https://github.com/Dev-Chitrang/ai-trip-planner.git
+git clone https://github.com/Dev-Chitrang/AICTE-AI-CLOUD.git
 cd ai-trip-planner
 
 ### 2️⃣ Create a Virtual Environment
