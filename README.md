@@ -1,118 +1,64 @@
-# 🧭 AI Trip Planner — Powered by CrewAI, Gemini, and SerpAPI 🌍
+# AI Multi-Agent Trip Planner
 
-An **AI-powered travel planning assistant** that automatically creates your **complete trip itinerary** — including **flights, hotels, and day-by-day activities** — using multiple specialized agents working together.
+## Overview
+This system is an automated travel planning pipeline that uses multiple AI agents to search for flights, hotels, and generate a daily itinerary. It is a multi-agent AI system built to handle real-time data retrieval and structured plan generation based on user constraints like budget, dates, and interests.
 
-Built with **CrewAI**, **Gemini LLM**, and **SerpAPI**, and deployed as a beautiful **Streamlit web app**.
+## Architecture
+The system follows a multi-agent orchestration pattern using the crewAI framework.
 
----
+- **Components**:
+  - **Agents**: Specialized agents for flights, hotels, and itinerary planning.
+  - **Tools**: Custom Python tools that interface with SerpAPI (Google Flights, Google Hotels, and Google Search).
+  - **LLM**: Google Gemini 2.0 Flash-Exp for reasoning and natural language generation.
+  - **UI**: Streamlit-based web interface for user input and result visualization.
+- **Data Flow**:
+  1. User inputs (source, destination, dates, budget, interests) are captured via Streamlit.
+  2. The `Flight Specialist` agent uses the `FlightSearchTool` to retrieve real-time flight options.
+  3. The `Hotel Specialist` agent uses the `HotelSearchTool` to find accommodation within the specified budget.
+  4. The `Travel Planner` agent consumes the output of the previous two agents and uses the `AttractionSearchTool` to build a day-by-day itinerary.
+  5. The final plan is presented to the user.
 
-## 🚀 Features
+## Key Engineering Decisions
+- **Sequential Task Execution**: Tasks are executed in a fixed sequence (Flight -> Hotel -> Itinerary) to ensure downstream agents have the necessary context (e.g., arrival/departure times) to build a realistic timeline.
+- **Real-time Data Retrieval**: The system uses SerpAPI to fetch live travel data instead of relying on static training data, ensuring accuracy for pricing and availability.
+- **Static Airport Code Mapping**: A dictionary-based mapping for major cities to IATA codes was implemented in `tools.py` to improve the reliability of the Google Flights engine searches.
+- **Agent Backstory and Constraints**: Agents are configured with specific "backstories" and constraints (e.g., `max_iter=3`) to prevent infinite loops while ensuring they find relevant data.
 
-✅ **AI-Powered Multi-Agent Workflow**
-- Uses **CrewAI** to coordinate multiple intelligent agents:
-  - ✈️ `Flight Specialist` → Finds the best flight options
-  - 🏨 `Hotel Specialist` → Recommends top hotels within budget
-  - 📅 `Itinerary Planner` → Builds a realistic day-by-day itinerary
+## Features
+- **Real-time Flight Search**: Retrieves airline, flight number, departure/arrival times, and pricing in INR.
+- **Budget-Filtered Hotel Search**: Filters hotels based on a per-night cost derived from the total hotel budget and trip duration.
+- **Automated Itinerary Generation**: Creates a day-by-day timeline including travel days, morning/afternoon/evening activities, and estimated costs.
+- **Rate Limit Management**: Includes a cooldown mechanism to handle SerpAPI's free tier limitations.
 
-✅ **Real-Time Data via SerpAPI**
-- Fetches **live flight and hotel results** using the **Google Flights** and **Google Hotels** SerpAPI engines.
+## Tech Stack
+- **Backend**: Python 3.10+
+- **Agent Framework**: crewAI
+- **LLM**: Google Gemini 2.0 Flash-Exp
+- **Data APIs**: SerpAPI (Google Flights, Google Hotels, Google Search)
+- **UI**: Streamlit
 
-✅ **Gemini LLM Integration**
-- Uses Google’s **Gemini 2.0 Flash model** to intelligently reason, summarize, and generate itineraries.
+## Workflow / API
+The system operates internally as a directed acyclic graph (DAG) of tasks:
+1. `flight_task`: Executes a search via `FlightSearchTool` using `source`, `destination`, `start_date`, and `end_date`.
+2. `hotel_task`: Executes a search via `HotelSearchTool` using `destination`, `start_date`, and `end_date`.
+3. `itinerary_task`: Aggregates the results of the first two tasks and performs a search for points of interest via `AttractionSearchTool`.
 
-✅ **Beautiful Streamlit Dashboard**
-- User-friendly interface with:
-  - Trip inputs (source, destination, dates, budgets)
-  - Interest selection (sightseeing, food, adventure, etc.)
-  - Real-time progress bar
-  - Cooldown handling for API limits
-  - Downloadable trip plan text file
+## Challenges & Solutions
+- **API Rate Limiting**: SerpAPI's free tier has strict limits. This was addressed by implementing a 120-second cooldown in the Streamlit UI and reducing the number of concurrent tool calls.
+- **Geographic Ambiguity**: Searching for flights by city name can be unreliable. The solution was to implement an `AIRPORT_CODES` mapping in `tools.py` to ensure the API receives valid IATA codes.
+- **Itinerary Realism**: Initial versions generated activities without considering travel time. The `itinerary_agent` backstory was updated to explicitly prioritize travel logistics (departure/arrival) on travel days.
 
-✅ **Budget Breakdown**
-- Separate budget inputs for flights, hotels, and other expenses.
-- Clear summary: `X days (Y nights)` duration display.
-
-✅ **Smart Itinerary Generation**
-- Includes realistic **departure and return travel days**.
-- Avoids unrealistic early-morning arrivals.
-- Balanced daily activities with estimated costs.
-
----
-
-## 🧩 Tech Stack
-
-| Component                  | Technology                                                       |
-|----------------------------|------------------------------------------------------------------|
-| **Frontend**               | [Streamlit](https://streamlit.io/)                               |
-| **AI Engine**              | [CrewAI](https://github.com/joaomdmoura/crewai)                  |
-| **Language Model**         | [Gemini 2.0 Flash](https://ai.google.dev/gemini-api/docs/models) |
-| **Data Sources**           | [SerpAPI](https://serpapi.com/) (Google Flights + Hotels)        |
-| **Environment Management** | `dotenv`                                                         |
-| **Language**               | Python 3.10+                                                     |
-
----
-
-## 🧠 Project Architecture
-
-📦 AICTE-AI-CLOUD
-|-- app.py # Streamlit UI App
-|-- agents.py # Agents defininations (flight, hotel and itinerary)
-|-- tasks.py # CrewAI tasks for each agent
-|-- tools.py # SerpAPI integration tools
-|-- crew.py # Crew definiation and kickoff logic
-|-- requirements.py # Dependencies
-|-- Images # Output Images
-
-
-
-### 🔹 Agent Overview
-| Agent               | Goal                                | Tool Used            |
-|---------------------|-------------------------------------|----------------------|
-| `Flight Specialist` | Find best flights within budget     | FlightSearchTool     |
-| `Hotel Specialist`  | Recommend best hotels within budget | HotelSearchTool      |
-| `Travel Planner`    | Build detailed day-by-day itinerary | AttractionSearchTool |
-
----
-
-## ⚙️ Setup & Installation
-
-### 1️⃣ Clone the Repository
-```bash
-git clone https://github.com/Dev-Chitrang/AICTE-AI-CLOUD.git
-cd AICTE-AI-CLOUD
-
-### 2️⃣ Create a Virtual Environment
-python -m venv venv
-source venv/bin/activate   # for Mac/Linux
-venv\Scripts\activate      # for Windows
-
-### 3️⃣ Install Dependencies
-pip install -r requirements.txt
-
-4️⃣ Configure API Keys
-
-Create a .env file in the root directory with:
-
-GOOGLE_API_KEY=your_gemini_api_key_here
-SERPAPI_KEY=your_serpapi_key_here
-
-🧠 How It Works
-
-User inputs trip details (source, destination, dates, budgets, and interests).
-CrewAI sequentially activates:
-Flight agent → fetches flights
-Hotel agent → fetches hotels
-Itinerary agent → generates a realistic itinerary
-Streamlit app displays all results neatly:
-Flights ✈️
-Hotels 🏨
-Day-by-Day Itinerary 📅
-User can download the complete plan as a .txt file.
-
-
-🖥️ Running the App
-Start the Streamlit app:
-streamlit run app.py
-
-Then open in your browser:
-http://localhost:8501
+## How to Run
+1. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+2. Configure environment variables in a `.env` file:
+   ```env
+   GOOGLE_API_KEY=your_gemini_api_key
+   SERPAPI_KEY=your_serpapi_key
+   ```
+3. Launch the application:
+   ```bash
+   streamlit run app.py
+   ```
